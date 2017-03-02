@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pylistener_profile',
+    'pylistener_addressbook',
+    'pylistener_catatt'
 ]
 
 MIDDLEWARE = [
