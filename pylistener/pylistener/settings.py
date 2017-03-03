@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1rqz(urnx%(5m82v(!g%=uk^&!-%g3!^(f@!qr75s!k%+4^dsh'
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG", "True"))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split()
 
 
 # Application definition
@@ -78,8 +78,15 @@ WSGI_APPLICATION = 'pylistener.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("DB_NAME", "pylistener2_db"),
+        'USER': os.environ.get("DB_USERNAME", ""),
+        'PASSWORD': os.environ.get("DB_PASSWORD", ""),
+        'HOST': os.environ.get("DB_ENDPOINT", ""),
+        'PORT': '5432',
+        'TEST': {
+            'NAME': os.environ.get("TEST_PYCHART_DB", "test_pylistener2_db")
+        }
     }
 }
 
@@ -120,4 +127,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'pylistener', 'static')
+STATIC_URL = "/static/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
+# MEDIA_URL = "/media/"
+
+LOGIN_REDIRECT_URL = 'pylistener_profile:profile'
+
+# Email setup
+ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
