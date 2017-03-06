@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+    <div class="main_container">
+    <h1>With whom would you like to speak?</h1>
+    <br>
+    <ul>
+        {% for contact in contacts %}
+        <li class="list_item">
+            <a class="link_item" href="">
+                <img src="">
+                <p>{{ contact.name }}</p>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    </div>
+{% else %}
+  <p>You are not authenticated.</p>
+{% endif %}
+
+{% endblock %}
